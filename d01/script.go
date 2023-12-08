@@ -11,7 +11,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func main() {
+func main_0() {
 	loadErr := godotenv.Load("../.env")
 	if loadErr != nil {
 		fmt.Printf("Error loading env: %s", loadErr)
