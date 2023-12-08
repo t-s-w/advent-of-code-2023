@@ -25,6 +25,91 @@ func Part1() {
 	fmt.Println(output)
 }
 
+type CharSet map[string]bool
+
+var digitSet = CharSet{
+	"1": true,
+	"2": true,
+	"3": true,
+	"4": true,
+	"5": true,
+	"6": true,
+	"7": true,
+	"8": true,
+	"9": true,
+	"0": true,
+}
+
+func (c CharSet) has(str string) bool {
+	return c[str]
+}
+
+type Schematic []string
+
+func (schematic Schematic) completeNumber(x, y int) (int, bool) {
+	line := schematic[y]
+	if !digitSet.has(string(line[x])) {
+		return 0, false
+	}
+	start := x
+	end := x + 1
+	for start > 0 && digitSet.has(string(line[start-1])) {
+		start = start - 1
+	}
+	for end < len(line) && digitSet.has(string(line[end])) {
+		end = end + 1
+	}
+	result, err := strconv.Atoi(string(line[start:end]))
+	if err != nil {
+		fmt.Println(err)
+	}
+	return result, true
+}
+
+func (schematic Schematic) appendAdjacentNumber(a []int, x, y int) []int {
+	if x < 0 || x > len(schematic[0]) || y < 0 || y > len(schematic) {
+		return a
+	}
+	if num, ok := schematic.completeNumber(x, y); ok {
+		a = append(a, num)
+	}
+	return a
+}
+
+func Part2() (output int) {
+	lines := utils.GetInput(3)
+	schematic := Schematic(lines)
+	for y, line := range schematic {
+		for x, b := range line {
+			if string(b) == "*" {
+				adjacents := make([]int, 0, 6)
+				adjacents = schematic.appendAdjacentNumber(adjacents, x-1, y)
+				adjacents = schematic.appendAdjacentNumber(adjacents, x+1, y)
+				if y > 0 {
+					if digitSet.has(string(schematic[y-1][x])) {
+						adjacents = schematic.appendAdjacentNumber(adjacents, x, y-1)
+					} else {
+						adjacents = schematic.appendAdjacentNumber(adjacents, x-1, y-1)
+						adjacents = schematic.appendAdjacentNumber(adjacents, x+1, y-1)
+					}
+				}
+				if y < len(schematic) {
+					if digitSet.has(string(schematic[y+1][x])) {
+						adjacents = schematic.appendAdjacentNumber(adjacents, x, y+1)
+					} else {
+						adjacents = schematic.appendAdjacentNumber(adjacents, x-1, y+1)
+						adjacents = schematic.appendAdjacentNumber(adjacents, x+1, y+1)
+					}
+				}
+				if len(adjacents) == 2 {
+					output = output + adjacents[0]*adjacents[1]
+				}
+			}
+		}
+	}
+	return output
+}
+
 func findSymbol(line string, start, end int) bool {
 	symbolRegex := regexp.MustCompile("[^\\.0-9]")
 	if start < 0 {
@@ -57,4 +142,5 @@ func GetPartNumbers(line, prevLine, nextLine string) (value int) {
 
 func main() {
 	Part1()
+	fmt.Print(Part2())
 }
