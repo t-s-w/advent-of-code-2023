@@ -67,7 +67,7 @@ func (game *game) Check(criterion reading) bool {
 	return true
 }
 
-func main() {
+func part1() {
 	input := utils.Get("https://adventofcode.com/2023/day/2/input")
 	lines := strings.Split(string(input), "\n")
 	criterion := reading{
@@ -83,4 +83,31 @@ func main() {
 		}
 	}
 	fmt.Println(output)
+}
+
+func part2() {
+	input := utils.Get("https://adventofcode.com/2023/day/2/input")
+	lines := strings.Split(string(input), "\n")
+	output := 0
+	for _, line := range lines {
+		game := readGame(line)
+		minReading := reading{}
+		for _, reading := range game.readings {
+			if minReading.red < reading.red {
+				minReading.red = reading.red
+			}
+			if minReading.green < reading.green {
+				minReading.green = reading.green
+			}
+			if minReading.blue < reading.blue {
+				minReading.blue = reading.blue
+			}
+		}
+		output = output + minReading.red*minReading.green*minReading.blue
+	}
+	fmt.Println(output)
+}
+
+func main() {
+	part2()
 }
