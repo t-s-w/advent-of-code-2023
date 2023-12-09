@@ -9,10 +9,24 @@ import (
 
 func Part01() (score int) {
 	input := utils.GetInput(4)
-	for _, line := range input {
-		winning := make(map[string]bool)
-		winners := 0
+	winners := calcWinnersPerScratchcard(input)
+	for _, card := range winners {
+		if card > 0 {
+			score = score + intPow(2,card- 1)
+		}
+	}
+	return score
+}
+
+func calcWinnersPerScratchcard(input []string) []int {
+	output := make([]int, len(input))
+	for i, line := range input {
+		if line == "" {
+			output = output [:i]
+			return output
+		}
 		state := 0
+		winning := make(map[string]bool)
 		a := strings.Split(line, " ")
 		for _, b := range a {
 			switch state {
@@ -31,15 +45,28 @@ func Part01() (score int) {
 				
 			case 2:
 				if b != "" && winning[b] {
-					winners = winners + 1
+					output[i] = output[i] + 1
 				}
 			}
 		}
-		if winners > 0 {
-			score = score + intPow(2,winners-1)
-		}
 	}
-	return score
+	return output
+}
+
+func Part02() (result int) {
+	input := utils.GetInput(4)
+	winners := calcWinnersPerScratchcard(input)
+	cards := make([]int, len(winners), len(winners))
+	for i := 0; i < len(cards); i++ {
+		cards[i] = cards[i] + 1
+		for j := 1; j <= winners[i]; j++ {
+			cards[i+j] = cards[i+j] + cards[i]
+		}  
+	}
+	for _, v := range(cards) {
+		result = result + v
+	}
+	return result
 }
 
 func intPow(x,n int) int {
@@ -66,4 +93,5 @@ func intPow(x,n int) int {
 
 func main() {
 	fmt.Println(Part01())
+	fmt.Println(Part02())
 }
