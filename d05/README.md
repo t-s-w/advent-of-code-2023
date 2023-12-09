@@ -41,3 +41,7 @@ go: github.com/t-s-w/advent-of-code-2023/utils@upgrade (v0.0.0-20231209070949-8c
 ```
 
 ???? Is my only counterplay copying the `replace` statement every `go.mod` or what
+
+## Part 2 brute force method
+
+...I could hear my CPU humming as I turned it on. I'm sure there's a better way that manages interval logic and making a method of composing maps together. But that's a problem for another time, and my CPU working hard for 2 minutes certainly did it faster than I would've been able to code up that logic (and I have to go out for dinner in 10).

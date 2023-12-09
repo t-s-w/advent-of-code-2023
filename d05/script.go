@@ -44,6 +44,18 @@ func Part01(game *GameData) int {
 }
 
 func Part02(game *GameData) (result int) {
+	g := *game
+	result = int(^uint(0) >> 1) 
+	for j := 0; j < len(game.Seeds) / 2; j++ {
+		start := game.Seeds[j*2]
+		l := game.Seeds[j*2 + 1]
+		for seed := start; seed < start + l; seed++ {
+			loc := g.SeedLocMap(seed)
+			if loc < result {
+				result = loc
+			}
+		}
+	}
 	return result
 }
 
