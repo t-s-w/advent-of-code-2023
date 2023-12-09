@@ -1,9 +1,9 @@
-package d05
+package maaps
 
-type mapData [3]int
+type MapData [3]int
 
 type ResourceMap struct {
-	Data []mapData
+	Data []MapData
 }
 
 func (m *ResourceMap) Map(source int) (dest int) {
@@ -12,5 +12,5 @@ func (m *ResourceMap) Map(source int) (dest int) {
 			return source - m[1] + m[0]
 		}
 	}
-	return -1
+	return source
 }
