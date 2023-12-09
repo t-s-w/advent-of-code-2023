@@ -40,4 +40,4 @@ go: github.com/t-s-w/advent-of-code-2023/utils@upgrade (v0.0.0-20231209070949-8c
                 but was required as: github.com/t-s-w/advent-of-code-2023/utils
 ```
 
-???? What do I even do
+???? Is my only counterplay copying the `replace` statement every `go.mod` or what
